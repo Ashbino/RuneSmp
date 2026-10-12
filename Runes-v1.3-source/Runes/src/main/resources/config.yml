@@ -1,0 +1,156 @@
+# Runes config (v1.2). Times are in seconds. After editing, run /rune reload
+# If you are upgrading from an older version, DELETE the old config.yml first.
+#
+# Every rune works the same way:
+#   Shift + Right-click = start charging
+#   (build up power in the rune's own way)
+#   Right-click         = release
+#   Shift + Right-click while charging = cancel (no cooldown)
+
+runes:
+  # Hits deal 0 damage but build stacks. Release -> next hit gets bonus damage.
+  strength:
+    max-stacks: 8
+    min-stacks-to-release: 3
+    damage-per-stack: 0.75
+    full-charge-bonus: 1.0
+    max-bonus-damage: 8.0
+    combo-timeout-seconds: 6
+    released-hit-window-seconds: 10
+    cooldown-seconds: 20
+    min-attack-strength: 0.9
+    reset-on-hurt: false
+
+  # MOMENTUM: stacks build from distance SPRINTED. Release -> dash + speed buff scaled by stacks.
+  speed:
+    cooldown-seconds: 30
+    max-charge-seconds: 20
+    max-stacks: 8
+    min-stacks: 2
+    blocks-per-stack: 10
+    decay-delay-seconds: 3        # stop sprinting this long and momentum drains
+    dash-base: 0.7
+    dash-per-stack: 0.14
+    max-dash-power: 2.2
+    speed-buff-base-seconds: 3
+    speed-buff-seconds-per-stack: 1.0
+    speed-ii-stacks: 4            # stacks needed for Speed II
+    speed-iii-stacks: 7           # stacks needed for Speed III
+
+  # TIDE: while charging you take less damage and store part of it. Release -> wave deals the stored damage.
+  water:
+    cooldown-seconds: 35
+    max-charge-seconds: 12
+    damage-reduction: 0.25        # you take 25% less damage while charging
+    store-fraction: 0.5           # 50% of incoming damage is stored
+    max-pool: 14.0
+    min-pool: 3.0
+    wave-damage-multiplier: 1.0
+    max-wave-damage: 12.0
+    wave-radius-base: 4.0
+    wave-radius-per-pool: 0.2
+    wave-radius-max: 7.0
+    knockback-base: 0.8
+    knockback-per-pool: 0.06
+    knockback-max: 1.8
+    heal-fraction: 0.3            # you heal 30% of the stored damage
+    water-breathing-seconds: 15
+
+  # STORM CALL: you channel (slowed) and storm stacks build over time, faster in rain.
+  # Release -> lightning bolts rain down on enemies you are looking at. Right-click (not charging) cycles weather.
+  weather:
+    cooldown-seconds: 40
+    max-charge-seconds: 15
+    max-stacks: 6
+    min-stacks: 2
+    seconds-per-stack: 2.0
+    storm-seconds-per-stack: 1.0  # used when it's raining/thundering
+    slowness-amplifier: 0         # 0 = Slowness I while channeling
+    bolt-damage: 5.0
+    bolt-radius: 2.5
+    bolt-range: 25
+    allow-weather-change: true
+    weather-change-cooldown-seconds: 120
+
+  # EMBER MARKS: your hits (normal damage) mark enemies with ember stacks.
+  # Release -> every marked enemy in range detonates for damage + burning.
+  fire:
+    cooldown-seconds: 35
+    max-charge-seconds: 14
+    max-stacks-per-target: 5
+    min-total-stacks: 2
+    damage-per-stack: 1.5
+    burn-seconds: 4
+    detonation-range: 25
+    hit-min-attack-strength: 0.7
+    fire-resistance-seconds: 6
+
+  # BEDROCK: stacks build from MINING stone/ores/dirt while charging (prepare before a fight).
+  # Release -> absorption shield, resistance and a shockwave scaled by stacks.
+  earth:
+    cooldown-seconds: 40
+    max-charge-seconds: 60
+    max-stacks: 10
+    min-stacks: 3
+    absorption-per-stack: 1.0     # 1.0 = half a heart per stack
+    resistance-base-seconds: 5
+    resistance-seconds-per-stack: 0.8
+    quake-radius-base: 3.0
+    quake-radius-per-stack: 0.25
+    quake-radius-max: 6.0
+    quake-damage-base: 1.5
+    quake-damage-per-stack: 0.35
+    slow-base-seconds: 2
+    slow-seconds-per-stack: 0.2
+
+  # GALE: stacks build from JUMPING. Release -> big launch (more stacks = higher/further),
+  # gust pushes enemies away, slow falling so you land safely.
+  air:
+    cooldown-seconds: 30
+    max-charge-seconds: 15
+    max-stacks: 6
+    min-stacks: 2
+    jump-timeout-seconds: 6       # stop jumping and stacks fade one by one
+    launch-base: 0.7
+    launch-per-stack: 0.15
+    max-launch: 1.7
+    forward-base: 0.3
+    forward-per-stack: 0.1
+    gust-radius: 4
+    gust-knockback-base: 0.5
+    gust-knockback-per-stack: 0.15
+    gust-knockback-max: 1.6
+    slow-falling-seconds: 12
+
+# ---------------------------------------------------------------------------
+# OBTAINING RUNES
+# 1) Craft a RUNE SCROLL   2) Right-click it to start that rune's trial
+# 3) Finish the trial to receive the rune.
+# Only one trial can be active at a time. Progress is saved (survives restarts).
+# /rune trial = see progress,  /rune trial abandon = quit and get the scroll back.
+# ---------------------------------------------------------------------------
+scrolls:
+  announce-completion: true     # tell the whole server when someone earns a rune
+  count-player-kills: false     # false = only hostile mobs count for trials
+  ignore-spawner-mobs: true     # mobs from monster spawners don't count (anti-farm)
+  # Recipe shape:   C S C
+  #                 S P S      C = corner, S = side, P = center
+  #                 C S C
+  recipes:
+    strength: {corner: AMETHYST_SHARD, side: DIAMOND,            center: PAPER}
+    speed:    {corner: AMETHYST_SHARD, side: PHANTOM_MEMBRANE,   center: PAPER}
+    water:    {corner: AMETHYST_SHARD, side: PRISMARINE_CRYSTALS, center: PAPER}
+    weather:  {corner: AMETHYST_SHARD, side: LIGHTNING_ROD,      center: PAPER}
+    fire:     {corner: AMETHYST_SHARD, side: BLAZE_ROD,          center: PAPER}
+    earth:    {corner: AMETHYST_SHARD, side: EMERALD,            center: PAPER}
+    air:      {corner: AMETHYST_SHARD, side: BREEZE_ROD,         center: PAPER}
+
+# How many qualifying kills each trial needs
+trials:
+  strength: {kills: 4}   # in a row, no damage taken in between
+  speed:    {kills: 4}   # while sprinting
+  water:    {kills: 3}   # in water OR standing in rain
+  weather:  {kills: 3}   # during a thunderstorm
+  fire:     {kills: 3}   # while on fire OR in the Nether
+  earth:    {kills: 4}   # below Y=40 with no sky above
+  air:      {kills: 3}   # 4+ blocks above ground, or gliding

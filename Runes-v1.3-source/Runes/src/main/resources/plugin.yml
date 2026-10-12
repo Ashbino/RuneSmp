@@ -1,0 +1,16 @@
+name: Runes
+version: ${project.version}
+main: dev.runes.RunesPlugin
+api-version: '1.21'
+description: Elemental runes - strength, speed, water, weather, fire, earth and air.
+commands:
+  rune:
+    description: Give runes
+    usage: /rune give|scroll|trial|recipe|list|reload
+permissions:
+  runes.give:
+    description: Allows giving runes
+    default: op
+  runes.use:
+    description: Allows using runes
+    default: true
